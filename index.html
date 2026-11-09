@@ -1,0 +1,1014 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>House of J&S - Professional Exam Portal</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap');
+
+        /* Professional Gold and White Theme */
+        :root {
+            --primary-gold: #C5A059;
+            --light-gold: #F4EBD0;
+            --dark-gold: #A67B38;
+            --bg-white: #F8F9FA;
+            --card-white: #FFFFFF;
+            --text-main: #2C3E50;
+            --text-muted: #7F8C8D;
+            --danger: #E74C3C;
+            --success: #27AE60;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Inter', sans-serif;
+            user-select: none;
+            -webkit-user-select: none;
+        }
+
+        input, textarea, select, .notes-content {
+            user-select: text;
+            -webkit-user-select: text;
+        }
+
+        body {
+            background-color: var(--bg-white);
+            color: var(--text-main);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        /* Header */
+        header {
+            background: var(--card-white);
+            border-bottom: 3px solid var(--primary-gold);
+            padding: 15px 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+        }
+
+        .logo-area {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .logo-area img {
+            height: 50px;
+            border-radius: 8px;
+        }
+
+        .school-name {
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: var(--dark-gold);
+            letter-spacing: 0.5px;
+        }
+
+        .timer-box {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--danger);
+            background: #FFF0F0;
+            padding: 5px 20px;
+            border-radius: 8px;
+            border: 1px solid #FFCDCD;
+            display: none;
+        }
+
+        /* Layout */
+        .container {
+            max-width: 900px;
+            margin: 40px auto;
+            padding: 0 20px;
+        }
+
+        .section-card {
+            background: var(--card-white);
+            border-radius: 12px;
+            padding: 30px;
+            margin-bottom: 30px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.03);
+            border: 1px solid #EAEAEA;
+            border-top: 4px solid var(--primary-gold);
+        }
+
+        .section-title {
+            font-size: 1.3rem;
+            color: var(--dark-gold);
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid var(--light-gold);
+            font-weight: 600;
+            display: flex;
+            justify-content: space-between;
+        }
+
+        /* Question Styles */
+        .question-item {
+            margin-bottom: 25px;
+            padding-bottom: 15px;
+            border-bottom: 1px dashed #EEE;
+        }
+
+        .question-text {
+            font-weight: 600;
+            margin-bottom: 12px;
+            color: var(--text-main);
+        }
+
+        .options label {
+            display: block;
+            margin-bottom: 8px;
+            padding: 12px 15px;
+            background: var(--bg-white);
+            border: 1px solid #E0E0E0;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .options label:hover {
+            background: var(--light-gold);
+            border-color: var(--primary-gold);
+        }
+
+        .options input[type="radio"] {
+            margin-right: 10px;
+            accent-color: var(--primary-gold);
+        }
+
+        .answer-input {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #CCC;
+            border-radius: 8px;
+            font-size: 1rem;
+            outline: none;
+            transition: border 0.3s;
+            background: var(--bg-white);
+        }
+
+        .answer-input:focus {
+            border-color: var(--primary-gold);
+            box-shadow: 0 0 0 3px var(--light-gold);
+            background: #FFF;
+        }
+
+        /* Matching Section */
+        .matching-container {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 15px;
+        }
+
+        .match-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px;
+            background: var(--bg-white);
+            border-radius: 8px;
+            border: 1px solid #EAEAEA;
+        }
+
+        .match-item select {
+            width: 60%;
+            padding: 10px;
+            border: 1px solid var(--primary-gold);
+            border-radius: 6px;
+            background: var(--light-gold);
+            color: var(--text-main);
+            font-weight: 600;
+            cursor: pointer;
+            outline: none;
+        }
+
+        /* Buttons */
+        .btn {
+            background: var(--primary-gold);
+            color: #FFF;
+            border: none;
+            padding: 15px 30px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: inline-block;
+            text-align: center;
+        }
+
+        .btn:hover {
+            background: var(--dark-gold);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(197, 160, 89, 0.3);
+        }
+
+        .btn-outline {
+            background: transparent;
+            color: var(--dark-gold);
+            border: 2px solid var(--primary-gold);
+        }
+
+        .btn-outline:hover {
+            background: var(--light-gold);
+        }
+
+        /* Login Screen */
+        #login-screen {
+            max-width: 600px;
+            margin: 60px auto;
+            text-align: center;
+        }
+
+        #login-screen h1 {
+            color: var(--dark-gold);
+            font-size: 2.2rem;
+            margin-bottom: 10px;
+        }
+
+        /* Warning Modal */
+        #warning-modal {
+            display: none;
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(231, 76, 60, 0.95);
+            z-index: 9999;
+            justify-content: center;
+            align-items: center;
+            color: white;
+            text-align: center;
+            animation: flash 0.5s infinite alternate;
+        }
+
+        @keyframes flash {
+            from { background: rgba(231, 76, 60, 0.95); }
+            to { background: rgba(192, 57, 43, 0.98); }
+        }
+
+        .modal-content {
+            background: #FFF;
+            color: var(--danger);
+            padding: 50px;
+            border-radius: 16px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+            max-width: 500px;
+            border: 8px solid var(--danger);
+        }
+
+        .modal-content h2 {
+            font-size: 2rem;
+            margin-bottom: 20px;
+        }
+        
+        .modal-content p {
+            font-size: 1.2rem;
+            margin-bottom: 30px;
+            color: var(--text-main);
+        }
+
+        /* Results */
+        .result-header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .score-badge {
+            font-size: 4rem;
+            font-weight: 700;
+            color: var(--primary-gold);
+            background: var(--light-gold);
+            padding: 20px 40px;
+            border-radius: 20px;
+            display: inline-block;
+            margin: 20px 0;
+            border: 2px solid var(--primary-gold);
+        }
+
+        .review-item {
+            background: var(--card-white);
+            padding: 20px;
+            margin-bottom: 15px;
+            border-radius: 8px;
+            border-left: 6px solid #DDD;
+        }
+
+        .review-item.correct { border-left-color: var(--success); background: #F0FDF4; }
+        .review-item.incorrect { border-left-color: var(--danger); background: #FEF2F2; }
+
+        .feedback-text { margin-top: 10px; font-size: 0.95rem; color: var(--text-muted); }
+        .correct-ans { color: var(--success); font-weight: 600; }
+        .wrong-ans { color: var(--danger); font-weight: 600; }
+
+        /* Study Notes */
+        .notes-content {
+            max-height: 60vh;
+            overflow-y: auto;
+            text-align: left;
+            padding: 20px;
+            background: #FAFAFA;
+            border-radius: 8px;
+            border: 1px solid #EAEAEA;
+        }
+        
+        .notes-content h3 { color: var(--dark-gold); margin: 20px 0 10px; border-bottom: 1px solid var(--light-gold); padding-bottom: 5px; }
+        .notes-content h4 { color: var(--primary-gold); margin: 15px 0 5px; }
+        .notes-content ul { margin-left: 20px; margin-bottom: 15px; }
+        .notes-content li { margin-bottom: 8px; }
+        .notes-content table { width: 100%; border-collapse: collapse; margin-bottom: 15px; font-size: 0.9rem; }
+        .notes-content th, .notes-content td { border: 1px solid #CCC; padding: 8px; text-align: left; }
+        .notes-content th { background: var(--light-gold); color: var(--dark-gold); }
+
+        /* Utilities */
+        .hidden { display: none !important; }
+        .exam-container { min-height: 60vh; }
+    </style>
+</head>
+<body>
+
+    <!-- Warning Modal -->
+    <div id="warning-modal">
+        <div class="modal-content">
+            <h2>⚠️ WARNING!</h2>
+            <p>Do not leave the exam screen. Tab switching or minimizing is strictly prohibited.</p>
+            <p style="font-size: 1.5rem; font-weight: bold; color: var(--danger);">Warning: <span id="warning-count">1</span> / 3</p>
+            <p style="font-size: 0.9rem; color: #666;">If you reach 3 warnings, your exam will be automatically submitted.</p>
+            <button class="btn" onclick="closeWarning()">I Understand & Continue</button>
+        </div>
+    </div>
+
+    <!-- Header -->
+    <header>
+        <div class="logo-area">
+            <img src="logo1.png" alt="Logo" onerror="this.src='https://via.placeholder.com/50/ccc/fff?text=Logo'">
+            <div class="school-name">House of J&S Computer Training Center</div>
+        </div>
+        <div id="timer" class="timer-box">90:00</div>
+    </header>
+
+    <!-- Login Screen -->
+    <div id="login-screen" class="container section-card">
+        <h1>Year 8 ICT Final Exam</h1>
+        <p style="margin-bottom: 20px; color: var(--text-muted); font-size: 1.1rem;">Total Marks: 100 | Duration: 1 Hour 30 Minutes</p>
+        
+        <div style="background: #FFF3CD; color: #856404; padding: 15px; border-radius: 8px; margin-bottom: 30px; border: 1px solid #FFEEBA; text-align: left;">
+            <strong>⚠️ Examination Rules:</strong>
+            <ul style="margin-left: 20px; margin-top: 10px; font-size: 0.95rem;">
+                <li>The exam will automatically enter Full Screen mode.</li>
+                <li>Do NOT switch tabs, minimize the window, or exit full screen. An alarm will sound!</li>
+                <li>3 warnings will result in automatic submission.</li>
+                <li><strong>Important:</strong> You cannot go back to previous sections. Once you click "Next", your answers for that section are final.</li>
+            </ul>
+        </div>
+        
+        <input type="text" id="student-name" class="answer-input" placeholder="Enter your Full Name" style="max-width: 400px; margin-bottom: 20px; text-align: center;">
+        <br>
+        <button class="btn" onclick="startExam()" style="width: 250px;">Start Exam</button>
+        <br><br>
+        <button class="btn btn-outline" onclick="toggleStudyNotes()">📖 View Comprehensive Study Notes</button>
+        
+        <div id="study-notes" class="hidden" style="margin-top: 30px;">
+            <div class="section-title">Comprehensive Study Notes (All Units)</div>
+            <div class="notes-content" id="notes-content">
+                <!-- Notes injected by JS -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Exam Screen -->
+    <div id="exam-screen" class="container hidden">
+        <div id="exam-header" class="section-card" style="padding: 15px 30px; margin-bottom: 20px; text-align: center; font-weight: bold; color: var(--dark-gold);">
+            Part 1: Multiple Choice (30 Marks)
+        </div>
+        <div class="section-card exam-container">
+            <form id="exam-form">
+                <!-- Questions injected by JS dynamically per section -->
+            </form>
+        </div>
+        <div id="exam-controls" style="margin-bottom: 50px;">
+            <button class="btn" id="next-btn" onclick="nextSection()" style="width: 100%; background: var(--dark-gold);">Next Section ➔</button>
+        </div>
+    </div>
+
+    <!-- Result Screen -->
+    <div id="result-screen" class="container hidden">
+        <div class="result-header">
+            <h1>Examination Results</h1>
+            <div class="score-badge" id="final-score">0 / 100</div>
+            <p id="student-result-name" style="font-size: 1.2rem; font-weight: 600;"></p>
+        </div>
+        <div id="result-review"></div>
+        <button class="btn" onclick="window.location.reload()" style="width: 100%; margin-top: 20px;">Take Exam Again</button>
+    </div>
+
+    <script>
+        // --- 100 Marks Exam Data ---
+        const examData = {
+            part1_mcq: [
+                // 30 MCQs x 1 mark = 30 marks
+                { q: "What is the primary purpose of an operating system?", options: ["To browse the internet", "To manage hardware and software resources", "To design graphics", "To create spreadsheets"], answer: 1 },
+                { q: "Which of the following is NOT a role of an operating system?", options: ["Memory management", "File management", "Writing application code", "Processor management"], answer: 2 },
+                { q: "What type of software is an antivirus?", options: ["Application software", "Utility program", "Operating system", "Firmware"], answer: 1 },
+                { q: "Which of these is a characteristic of RAM?", options: ["Non-volatile", "Stores boot instructions permanently", "Volatile", "Slower than HDD"], answer: 2 },
+                { q: "What does ROM stand for?", options: ["Random Only Memory", "Read-Only Memory", "Rapid Output Memory", "Run-Only Memory"], answer: 1 },
+                { q: "Which network covers a single room or immediate workspace?", options: ["WAN", "LAN", "PAN", "MAN"], answer: 2 },
+                { q: "What is the largest example of a WAN?", options: ["Bluetooth", "Wi-Fi", "The Internet", "A school network"], answer: 2 },
+                { q: "Which transmission medium uses pulses of light?", options: ["Copper wire", "Fibre-optic cable", "Coaxial cable", "Wi-Fi"], answer: 1 },
+                { q: "Which network type connects devices within a single building?", options: ["WAN", "LAN", "PAN", "WWAN"], answer: 1 },
+                { q: "What is a MAC address also known as?", options: ["IP Address", "Physical Address", "Logical Address", "Network Address"], answer: 1 },
+                { q: "Which device routes data between different networks based on IP addresses?", options: ["Switch", "Hub", "Router", "Modem"], answer: 2 },
+                { q: "Which technology is used for WPAN?", options: ["Wi-Fi", "Bluetooth", "4G LTE", "Ethernet"], answer: 1 },
+                { q: "What type of transmission sends multiple bits simultaneously?", options: ["Serial", "Parallel", "Wireless", "Fibre"], answer: 1 },
+                { q: "Which is a disadvantage of parallel transmission?", options: ["It is too slow", "It requires only one wire", "Skew over long distances", "It is immune to interference"], answer: 2 },
+                { q: "What does a firewall do?", options: ["Removes viruses", "Monitors and controls network traffic", "Speeds up the internet", "Stores backup files"], answer: 1 },
+                { q: "What type of malware secretly monitors user activity?", options: ["Adware", "Spyware", "Trojan", "Worm"], answer: 1 },
+                { q: "What is a Trojan Horse?", options: ["A type of hardware", "Legitimate software", "Malware disguised as legitimate software", "A network protocol"], answer: 2 },
+                { q: "Which software displays unwanted advertisements?", options: ["Antivirus", "Adware", "Firewall", "Anti-spyware"], answer: 1 },
+                { q: "What is the purpose of a utility program?", options: ["To play games", "To maintain and optimize the computer", "To create documents", "To browse the web"], answer: 1 },
+                { q: "Which logic gate outputs 1 only if both inputs are 1?", options: ["OR", "AND", "NOT", "XOR"], answer: 1 },
+                { q: "Which logic gate outputs 1 if at least one input is 1?", options: ["OR", "AND", "NOT", "NAND"], answer: 0 },
+                { q: "Convert binary 00001111 to denary.", options: ["15", "16", "31", "8"], answer: 0 },
+                { q: "Convert denary 10 to binary.", options: ["1010", "1100", "1000", "1110"], answer: 0 },
+                { q: "What is augmented reality (AR)?", options: ["A fully virtual world", "Adding digital info to the real world", "A type of network", "A data transmission method"], answer: 1 },
+                { q: "Which is a valid AR use in education?", options: ["Typing an essay", "Viewing a 3D heart over a textbook", "Sending an email", "Printing a worksheet"], answer: 1 },
+                { q: "Which is a characteristic of fibre-optic cable?", options: ["Uses electrical signals", "Susceptible to EMI", "Uses light pulses", "Very cheap to install"], answer: 2 },
+                { q: "What is bandwidth?", options: ["A type of cable", "Amount of data transferred per second", "A security protocol", "A network device"], answer: 1 },
+                { q: "Which device combines a WAP and a switch in a home network?", options: ["Router", "Modem", "Hub", "Repeater"], answer: 0 },
+                { q: "What is primary memory?", options: ["Hard drive", "USB drive", "RAM and ROM", "Cloud storage"], answer: 2 },
+                { q: "Which of the following is secondary storage?", options: ["RAM", "ROM", "SSD", "Cache"], answer: 2 }
+            ],
+            part2_fill: [
+                // 10 Fill in blanks x 1 mark = 10 marks
+                { q: "1. A ________ allows devices to connect to a network using Wi-Fi.", answers: ["wireless access point", "wap"] },
+                { q: "2. Firewalls usually sit between the internal network and the ________ network.", answers: ["external", "untrusted"] },
+                { q: "3. ________ is a wireless technology for short-range communication within 10 meters.", answers: ["bluetooth"] },
+                { q: "4. A type of software that blocks access until a ransom is paid is called ________.", answers: ["ransomware"] },
+                { q: "5. RAM is ________, meaning it loses data when power is turned off.", answers: ["volatile"] },
+                { q: "6. Another name for a MAC address is ________ address.", answers: ["physical", "hardware"] },
+                { q: "7. A ________ routes data from one network to another based on IP addresses.", answers: ["router"] },
+                { q: "8. Fibre-optic cables transmit data as pulses of ________.", answers: ["light"] },
+                { q: "9. ________ transmission sends data one bit at a time over a single channel.", answers: ["serial"] },
+                { q: "10. A ________ server provides resources and services to client computers over a network.", answers: ["server"] }
+            ],
+            part3_matching: {
+                // 10 Matching x 1 mark = 10 marks
+                left: [
+                    "Operating System", "RAM", "ROM", "Firewall", "Spyware", 
+                    "Trojan", "Fibre-Optic", "Copper Wire", "Serial", "Parallel"
+                ],
+                right: [
+                    "Manages hardware and software",
+                    "Volatile, temporary memory",
+                    "Non-volatile, stores boot instructions",
+                    "Monitors and controls network traffic",
+                    "Secretly monitors user activity",
+                    "Malware disguised as legitimate software",
+                    "Transmits data using pulses of light",
+                    "Transmits data using electrical signals",
+                    "Sends one bit at a time sequentially",
+                    "Sends multiple bits simultaneously"
+                ],
+                // Maps left index to right index
+                answers: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
+            },
+            part4_short: [
+                // 20 Short Questions x 1 mark = 20 marks
+                { q: "1. Define a PAN.", answers: ["personal area network", "network centered around a single person"] },
+                { q: "2. State one role of an operating system.", answers: ["memory management", "processor management", "file management", "security", "user interface"] },
+                { q: "3. What is a utility program?", answers: ["software to maintain and optimize", "helps analyze configure optimize maintain"] },
+                { q: "4. What does LAN stand for?", answers: ["local area network"] },
+                { q: "5. What does WAN stand for?", answers: ["wide area network"] },
+                { q: "6. What is adware?", answers: ["software that displays unwanted ads", "unwanted advertisements"] },
+                { q: "7. State one difference between RAM and ROM.", answers: ["ram is volatile, rom is non-volatile", "ram is read/write, rom is read-only"] },
+                { q: "8. Name one example of secondary storage.", answers: ["hdd", "ssd", "usb", "hard drive", "solid state drive"] },
+                { q: "9. What is the purpose of an antivirus?", answers: ["detect and remove malware", "detect prevent remove malicious software"] },
+                { q: "10. What is anti-spyware?", answers: ["software to detect and remove spyware", "detects and removes spyware"] },
+                { q: "11. Convert binary 01100100 to denary.", answers: ["100"] },
+                { q: "12. Convert denary 30 to 8-bit binary.", answers: ["00011110"] },
+                { q: "13. What is augmented reality (AR)?", answers: ["adds computer generated information to the real world", "technology that adds digital info to real world"] },
+                { q: "14. Give one advantage of fibre-optic over copper.", answers: ["faster", "longer distance", "immune to emi", "higher bandwidth"] },
+                { q: "15. Give one disadvantage of fibre-optic.", answers: ["expensive", "fragile", "difficult to install"] },
+                { q: "16. What is a Trojan?", answers: ["malware disguised as legitimate software", "malicious software disguised as useful"] },
+                { q: "17. Which network type uses Bluetooth?", answers: ["pan", "wpan"] },
+                { q: "18. What does a router do?", answers: ["routes data between networks based on ip", "routes data from one network to another"] },
+                { q: "19. What is bandwidth?", answers: ["amount of data transferred in one second", "amount of data can transfer in one second"] },
+                { q: "20. State one security feature for a wireless network.", answers: ["wpa2", "wpa3", "strong password", "mac address filtering", "firewall"] }
+            ],
+            part5_long: [
+                // 4 Long Questions x 7.5 marks = 30 marks (Total = 100)
+                { 
+                    q: "1. Explain the main roles of an operating system. Give at least three detailed examples. (7.5 marks)", 
+                    keywords: [["processor", "cpu", "scheduling"], ["memory", "ram"], ["file", "directory"], ["security", "access", "password"], ["user interface", "gui", "cli"], ["i/o", "device", "driver"]],
+                    marks: 7.5
+                },
+                { 
+                    q: "2. Compare Wired and Wireless networks. Discuss at least three differences (Medium, Speed, Mobility, Security) and state which is more suitable for a computer lab with 30 desktop computers and why. (7.5 marks)", 
+                    keywords: [["cable", "physical"], ["radio", "wi-fi"], ["faster", "speed", "bandwidth"], ["mobility", "move"], ["security", "secure", "intercept"], ["wired", "computer lab", "desktop"]],
+                    marks: 7.5
+                },
+                { 
+                    q: "3. Explain how the following protect a computer network: Firewall, Antivirus, and Anti-spyware. (7.5 marks)", 
+                    keywords: [["firewall", "traffic", "rules", "block"], ["antivirus", "malware", "virus", "scan"], ["anti-spyware", "spyware", "monitor", "keylog"]],
+                    marks: 7.5
+                },
+                { 
+                    q: "4. Compare Serial and Parallel data transmission (give one difference) AND compare Fibre-Optic and Copper cables (give two differences). (7.5 marks)", 
+                    keywords: [["serial", "one bit", "sequential"], ["parallel", "multiple bits", "simultaneous"], ["fibre", "light", "emi", "fast"], ["copper", "electrical", "interference", "cheap"]],
+                    marks: 7.5
+                }
+            ]
+        };
+
+        // State
+        let timeLeft = 90 * 60;
+        let timerInterval;
+        let warningCount = 0;
+        let isExamActive = false;
+        let currentSection = 0; // 0 to 4
+        
+        // Store user answers here to prevent looking back
+        let userAnswers = {
+            part1: {},
+            part2: {},
+            part3: {},
+            part4: {},
+            part5: {}
+        };
+
+        // Audio Context for Alarm
+        let audioCtx;
+
+        function initAudio() {
+            if (!audioCtx) {
+                audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+            }
+        }
+
+        function playAlarm() {
+            initAudio();
+            if (audioCtx.state === 'suspended') audioCtx.resume();
+            
+            // Loud siren
+            const osc = audioCtx.createOscillator();
+            const gain = audioCtx.createGain();
+            
+            osc.type = 'square';
+            osc.frequency.setValueAtTime(800, audioCtx.currentTime);
+            osc.frequency.linearRampToValueAtTime(1200, audioCtx.currentTime + 0.5);
+            osc.frequency.linearRampToValueAtTime(800, audioCtx.currentTime + 1);
+            osc.frequency.linearRampToValueAtTime(1200, audioCtx.currentTime + 1.5);
+            osc.frequency.linearRampToValueAtTime(800, audioCtx.currentTime + 2);
+            
+            gain.gain.setValueAtTime(1, audioCtx.currentTime); // Max volume
+            gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 2.5);
+            
+            osc.connect(gain);
+            gain.connect(audioCtx.destination);
+            
+            osc.start();
+            osc.stop(audioCtx.currentTime + 2.5);
+        }
+
+        // --- UI Rendering ---
+        function toggleStudyNotes() {
+            const notes = document.getElementById('study-notes');
+            notes.classList.toggle('hidden');
+        }
+
+        function startExam() {
+            const name = document.getElementById('student-name').value.trim();
+            if (!name) {
+                alert("Please enter your name to start.");
+                return;
+            }
+
+            initAudio();
+
+            const elem = document.documentElement;
+            if (elem.requestFullscreen) {
+                elem.requestFullscreen().catch(err => console.log(err));
+            }
+
+            document.getElementById('login-screen').classList.add('hidden');
+            document.getElementById('exam-screen').classList.remove('hidden');
+            document.getElementById('timer').style.display = 'block';
+            
+            isExamActive = true;
+            startTimer();
+            setupAntiCheat();
+            
+            // Load first section
+            loadSection(0);
+        }
+
+        function startTimer() {
+            timerInterval = setInterval(() => {
+                if (timeLeft <= 0) {
+                    clearInterval(timerInterval);
+                    submitExam(true);
+                    return;
+                }
+                timeLeft--;
+                const m = Math.floor(timeLeft / 60);
+                const s = timeLeft % 60;
+                document.getElementById('timer').innerText = `${m}:${s < 10 ? '0' : ''}${s}`;
+            }, 1000);
+        }
+
+        // --- STRICT PAGINATION (NO GOING BACK) ---
+        function loadSection(index) {
+            currentSection = index;
+            const form = document.getElementById('exam-form');
+            const header = document.getElementById('exam-header');
+            const nextBtn = document.getElementById('next-btn');
+            
+            form.innerHTML = ''; // Clear previous questions completely
+            window.scrollTo(0, 0); // Force scroll to top
+
+            if (index === 0) {
+                header.innerText = "Part 1: Multiple Choice (30 Marks)";
+                nextBtn.innerText = "Next: Fill in the Blanks ➔";
+                examData.part1_mcq.forEach((q, i) => {
+                    let html = `<div class="question-item">
+                        <div class="question-text">${i + 1}. ${q.q}</div>
+                        <div class="options">`;
+                    q.options.forEach((opt, oi) => {
+                        html += `<label><input type="radio" name="q1_${i}" value="${oi}"> ${opt}</label>`;
+                    });
+                    html += `</div></div>`;
+                    form.innerHTML += html;
+                });
+            } 
+            else if (index === 1) {
+                header.innerText = "Part 2: Fill in the Blanks (10 Marks)";
+                nextBtn.innerText = "Next: Matching ➔";
+                examData.part2_fill.forEach((q, i) => {
+                    form.innerHTML += `<div class="question-item">
+                        <div class="question-text">${q.q}</div>
+                        <input type="text" class="answer-input" name="q2_${i}" placeholder="Type your answer here..." autocomplete="off">
+                    </div>`;
+                });
+            } 
+            else if (index === 2) {
+                header.innerText = "Part 3: Matching (10 Marks)";
+                nextBtn.innerText = "Next: Short Questions ➔";
+                let html = `<p style="margin-bottom: 15px; color: var(--text-muted);">Select the correct definition for each term.</p><div class="matching-container">`;
+                examData.part3_matching.left.forEach((term, i) => {
+                    html += `<div class="match-item">
+                        <span style="font-weight:600; width:35%;">${term}</span>
+                        <select name="q3_${i}">
+                            <option value="">-- Select Definition --</option>`;
+                    examData.part3_matching.right.forEach((def, di) => {
+                        html += `<option value="${di}">${def}</option>`;
+                    });
+                    html += `</select></div>`;
+                });
+                html += `</div>`;
+                form.innerHTML = html;
+            } 
+            else if (index === 3) {
+                header.innerText = "Part 4: Short Questions (20 Marks)";
+                nextBtn.innerText = "Next: Long Questions ➔";
+                examData.part4_short.forEach((q, i) => {
+                    form.innerHTML += `<div class="question-item">
+                        <div class="question-text">${q.q}</div>
+                        <input type="text" class="answer-input" name="q4_${i}" placeholder="Type your answer here..." autocomplete="off">
+                    </div>`;
+                });
+            } 
+            else if (index === 4) {
+                header.innerText = "Part 5: Long Questions (30 Marks)";
+                nextBtn.innerText = "Submit Final Exam";
+                nextBtn.style.background = "var(--success)";
+                examData.part5_long.forEach((q, i) => {
+                    form.innerHTML += `<div class="question-item">
+                        <div class="question-text">${q.q}</div>
+                        <textarea class="answer-input" name="q5_${i}" rows="6" placeholder="Write your detailed answer here..."></textarea>
+                    </div>`;
+                });
+            }
+        }
+
+        function nextSection() {
+            // Save current section answers
+            saveAnswers(currentSection);
+
+            if (currentSection < 4) {
+                // Move to next section, wiping the previous one
+                loadSection(currentSection + 1);
+            } else {
+                // Final submission
+                if (confirm("Are you sure you want to submit your final exam? You cannot go back.")) {
+                    submitExam(false);
+                }
+            }
+        }
+
+        function saveAnswers(sectionIndex) {
+            const form = document.getElementById('exam-form');
+            
+            if (sectionIndex === 0) {
+                examData.part1_mcq.forEach((q, i) => {
+                    const selected = form.querySelector(`input[name="q1_${i}"]:checked`);
+                    userAnswers.part1[i] = selected ? parseInt(selected.value) : -1;
+                });
+            } 
+            else if (sectionIndex === 1) {
+                examData.part2_fill.forEach((q, i) => {
+                    userAnswers.part2[i] = form.querySelector(`input[name="q2_${i}"]`).value.trim().toLowerCase();
+                });
+            } 
+            else if (sectionIndex === 2) {
+                examData.part3_matching.left.forEach((term, i) => {
+                    const val = form.querySelector(`select[name="q3_${i}"]`).value;
+                    userAnswers.part3[i] = val !== "" ? parseInt(val) : -1;
+                });
+            } 
+            else if (sectionIndex === 3) {
+                examData.part4_short.forEach((q, i) => {
+                    userAnswers.part4[i] = form.querySelector(`input[name="q4_${i}"]`).value.trim().toLowerCase();
+                });
+            } 
+            else if (sectionIndex === 4) {
+                examData.part5_long.forEach((q, i) => {
+                    userAnswers.part5[i] = form.querySelector(`textarea[name="q5_${i}"]`).value.trim().toLowerCase();
+                });
+            }
+        }
+
+        function submitExam(isAuto) {
+            if (!isAuto) {
+                // Already confirmed in nextSection
+            }
+            
+            clearInterval(timerInterval);
+            isExamActive = false;
+            
+            if (document.fullscreenElement) {
+                document.exitFullscreen().catch(err => console.log(err));
+            }
+
+            calculateResults();
+            document.getElementById('exam-screen').classList.add('hidden');
+            document.getElementById('result-screen').classList.remove('hidden');
+            document.getElementById('timer').style.display = 'none';
+            window.scrollTo(0, 0);
+        }
+
+        // --- Anti-Cheat ---
+        function setupAntiCheat() {
+            document.addEventListener('contextmenu', e => e.preventDefault());
+            ['copy', 'paste', 'cut'].forEach(evt => document.addEventListener(evt, e => e.preventDefault()));
+            document.addEventListener('keydown', e => {
+                if (e.key === 'F12' || (e.ctrlKey && e.shiftKey && (e.key === 'I' || e.key === 'J')) || (e.ctrlKey && e.key === 'U')) {
+                    e.preventDefault();
+                }
+            });
+
+            document.addEventListener('visibilitychange', () => {
+                if (document.hidden && isExamActive) triggerWarning();
+            });
+
+            window.addEventListener('blur', () => {
+                if (isExamActive) triggerWarning();
+            });
+
+            document.addEventListener('fullscreenchange', () => {
+                if (!document.fullscreenElement && isExamActive) {
+                    triggerWarning();
+                    document.documentElement.requestFullscreen().catch(err => console.log(err));
+                }
+            });
+        }
+
+        function triggerWarning() {
+            if (!isExamActive) return;
+            
+            playAlarm();
+            warningCount++;
+            
+            document.getElementById('warning-count').innerText = warningCount;
+            document.getElementById('warning-modal').style.display = 'flex';
+            
+            if (warningCount >= 3) {
+                document.querySelector('#warning-modal button').style.display = 'none';
+                document.querySelector('#warning-modal p').innerText = "You have reached 3 warnings. Auto-submitting your exam now.";
+                setTimeout(() => {
+                    submitExam(true);
+                }, 3000);
+            }
+        }
+
+        function closeWarning() {
+            document.getElementById('warning-modal').style.display = 'none';
+            if (isExamActive) {
+                document.documentElement.requestFullscreen().catch(err => console.log(err));
+            }
+        }
+
+        // --- Grading ---
+        function calculateResults() {
+            let score = 0;
+            const reviewDiv = document.getElementById('result-review');
+            reviewDiv.innerHTML = '<h2 style="margin-bottom: 20px; color: var(--dark-gold);">Detailed Review</h2>';
+            
+            const studentName = document.getElementById('student-name').value;
+            document.getElementById('student-result-name').innerText = `Student: ${studentName}`;
+
+            // 1. MCQ
+            examData.part1_mcq.forEach((q, i) => {
+                const userAns = userAnswers.part1[i];
+                const isCorrect = userAns === q.answer;
+                if (isCorrect) score += 1;
+
+                reviewDiv.innerHTML += createReviewItem(`Q${i+1}: ${q.q}`, isCorrect, 
+                    userAns !== -1 ? q.options[userAns] : "No Answer", 
+                    q.options[q.answer]);
+            });
+
+            // 2. Fill in Blanks
+            examData.part2_fill.forEach((q, i) => {
+                const input = userAnswers.part2[i] || "";
+                const isCorrect = q.answers.some(a => input.includes(a));
+                if (isCorrect) score += 1;
+
+                reviewDiv.innerHTML += createReviewItem(`Q${i+31}: ${q.q}`, isCorrect, 
+                    input || "No Answer", q.answers[0]);
+            });
+
+            // 3. Matching
+            examData.part3_matching.left.forEach((term, i) => {
+                const userAns = userAnswers.part3[i];
+                const isCorrect = userAns !== -1 && userAns === examData.part3_matching.answers[i];
+                if (isCorrect) score += 1;
+
+                const correctDef = examData.part3_matching.right[examData.part3_matching.answers[i]];
+                const userDef = userAns !== -1 ? examData.part3_matching.right[userAns] : "No Answer";
+                
+                reviewDiv.innerHTML += createReviewItem(`Q${i+41}: Match "${term}"`, isCorrect, userDef, correctDef);
+            });
+
+            // 4. Short Questions
+            examData.part4_short.forEach((q, i) => {
+                const input = userAnswers.part4[i] || "";
+                const isCorrect = q.answers.some(a => input.includes(a));
+                if (isCorrect) score += 1;
+
+                reviewDiv.innerHTML += createReviewItem(`Q${i+51}: ${q.q}`, isCorrect, 
+                    input || "No Answer", q.answers[0]);
+            });
+
+            // 5. Long Questions
+            examData.part5_long.forEach((q, i) => {
+                const input = userAnswers.part5[i] || "";
+                let matchedKeywords = 0;
+                let totalKeywords = q.keywords.length;
+                
+                q.keywords.forEach(group => {
+                    if (group.some(k => input.includes(k))) matchedKeywords++;
+                });
+
+                let earnedMarks = (matchedKeywords / totalKeywords) * q.marks;
+                earnedMarks = Math.min(earnedMarks, q.marks);
+                score += earnedMarks;
+
+                const isCorrect = earnedMarks > (q.marks * 0.5);
+                const feedback = `Matched ${matchedKeywords}/${totalKeywords} key concepts. (Score: ${earnedMarks.toFixed(1)}/${q.marks})`;
+                
+                reviewDiv.innerHTML += createReviewItem(`Q${i+71}: ${q.q}`, isCorrect, 
+                    input ? "See answer above" : "No Answer", feedback);
+            });
+
+            document.getElementById('final-score').innerText = `${score.toFixed(1)} / 100`;
+        }
+
+        function createReviewItem(question, isCorrect, userAns, correctAns) {
+            return `
+                <div class="review-item ${isCorrect ? 'correct' : 'incorrect'}">
+                    <div style="font-weight: 600; margin-bottom: 8px;">${question}</div>
+                    <div class="feedback-text">
+                        <span class="${isCorrect ? 'correct-ans' : 'wrong-ans'}">Your Answer:</span> ${userAns}<br>
+                        ${!isCorrect ? `<span class="correct-ans">Expected Answer/Feedback:</span> ${correctAns}` : '✅ Correct'}
+                    </div>
+                </div>
+            `;
+        }
+
+        // --- Comprehensive Study Notes Injection ---
+        function populateNotes() {
+            document.getElementById('notes-content').innerHTML = `
+                <h3>Part 1: Operating Systems, Storage, and Memory</h3>
+                
+                <h4>1. Operating System (OS)</h4>
+                <p>System software that manages computer hardware, software resources, and provides common services for computer programs. It acts as an intermediary between the user/applications and the physical hardware.</p>
+                
+                <h4>2. Utility Program</h4>
+                <p>System software designed to help analyze, configure, optimize, or maintain a computer. Unlike application software, utilities focus on how the computer system functions (e.g., backups, disk cleanup, antivirus protection).</p>
+                
+                <h4>3. Roles of an Operating System</h4>
+                <ul>
+                    <li><strong>Processor Management (CPU Scheduling):</strong> Allocates CPU time between different running tasks and programs.</li>
+                    <li><strong>Memory Management:</strong> Tracks primary memory (RAM), allocating and deallocating memory space for programs as needed.</li>
+                    <li><strong>Input/Output (I/O) Device Management:</strong> Controls peripheral devices (keyboards, mice, printers) using device drivers.</li>
+                    <li><strong>File Management:</strong> Organizes, names, saves, and retrieves files on secondary storage devices, maintaining directory structures and access permissions.</li>
+                    <li><strong>Security & Access Control:</strong> Manages user accounts, passwords, and file permissions to protect against unauthorized access.</li>
+                    <li><strong>User Interface (UI):</strong> Provides a way for users to interact with the computer (GUI or CLI).</li>
+                </ul>
+
+                <h4>4. Primary Memory</h4>
+                <p>Accessed directly by the CPU. Holds data and instructions currently working on (e.g., RAM and ROM). Fast access times, generally volatile (RAM), smaller capacity than secondary storage.</p>
+
+                <h4>5. Secondary Storage Device</h4>
+                <p>Non-volatile, long-term storage hardware used to store data and programs even when the computer is turned off (e.g., HDDs, SSDs, USB flash drives, optical discs).</p>
+
+                <h4>6. Main Features of RAM and ROM</h4>
+                <table>
+                    <tr><th>Feature</th><th>RAM</th><th>ROM</th></tr>
+                    <tr><td><strong>Volatility</strong></td><td>Volatile – loses all data when power is off.</td><td>Non-volatile – retains data permanently.</td></tr>
+                    <tr><td><strong>Read/Write</strong></td><td>Can be both read from and written to frequently.</td><td>Primarily read-only; written rarely.</td></tr>
+                    <tr><td><strong>Function</strong></td><td>Holds currently running programs and active OS data.</td><td>Stores essential boot instructions (BIOS/UEFI).</td></tr>
+                    <tr><td><strong>Speed</strong></td><td>Extremely fast.</td><td>Slower than RAM, faster than secondary storage.</td></tr>
+                </table>
+
+                <h3>Part 2: Network Types and Data Transmission</h3>
+                
+                <h4>Network Types</h4>
+                <ul>
+                    <li><strong>PAN (Personal Area Network):</strong> Centered around a single person within a room/workspace (~10 meters). Example: Bluetooth connection.</li>
+                    <li><strong>WPAN (Wireless PAN):</strong> Relies entirely on wireless technologies (Bluetooth, Zigbee, Infrared).</li>
+                    <li><strong>LAN (Local Area Network):</strong> Connects devices within a limited geographical area (home, school, office building).</li>
+                    <li><strong>WLAN (Wireless LAN):</strong> A LAN using wireless technology (Wi-Fi) instead of Ethernet cables.</li>
+                    <li><strong>WAN (Wide Area Network):</strong> Covers a large geographical area (cities, countries). The Internet is the largest WAN.</li>
+                    <li><strong>WWAN (Wireless WAN):</strong> Covers large areas using cellular technologies (4G LTE, 5G).</li>
+                </ul>
+
+                <h4>Wired vs Wireless Networks</h4>
+                <table>
+                    <tr><th>Feature</th><th>Wired Networks</th><th>Wireless Networks</th></tr>
+                    <tr><td><strong>Medium</strong></td><td>Physical cables (Ethernet, fibre-optic).</td><td>Radio waves, Wi-Fi, infrared.</td></tr>
+                    <tr><td><strong>Speed</strong></td><td>Faster, more consistent, higher bandwidth.</td><td>Slower, fluctuates due to interference.</td></tr>
+                    <tr><td><strong>Mobility</strong></td><td>Tethered to ports, harder to move.</td><td>High mobility, easy to connect anywhere.</td></tr>
+                    <tr><td><strong>Security</strong></td><td>More secure (physical access required).</td><td>Easier to intercept, needs strong encryption (WPA3).</td></tr>
+                </table>
+
+                <h4>Fibre-Optic vs Copper Wire</h4>
+                <table>
+                    <tr><th>Feature</th><th>Fibre-Optic</th><th>Copper Wire</th></tr>
+                    <tr><td><strong>Medium</strong></td><td>Pulses of light.</td><td>Electrical signals.</td></tr>
+                    <tr><td><strong>Speed/Distance</strong></td><td>Extremely high speeds over long distances, minimal loss.</td><td>Slower over long distances due to resistance.</td></tr>
+                    <tr><td><strong>Interference</strong></td><td>Immune to EMI and RFI.</td><td>Susceptible to EMI.</td></tr>
+                    <tr><td><strong>Cost/Install</strong></td><td>Expensive, fragile glass fibers, specialist handling.</td><td>Cheaper, robust, easier to install.</td></tr>
+                </table>
+
+                <h4>Serial vs Parallel Transmission</h4>
+                <table>
+                    <tr><th>Feature</th><th>Serial Transmission</th><th>Parallel Transmission</th></tr>
+                    <tr><td><strong>Data Flow</strong></td><td>Bits sent sequentially over a single wire.</td><td>Multiple bits sent simultaneously over multiple wires.</td></tr>
+                    <tr><td><strong>Distance/Skew</strong></td><td>Suitable for long distances, no timing skew.</td><td>Short distances only; bits get out of sync (skew).</td></tr>
+                    <tr><td><strong>Cost</strong></td><td>Simpler hardware, fewer wires, cheaper.</td><td>Complex multi-wire cables, expensive.</td></tr>
+                </table>
+
+                <h3>Part 3: Utility Software and Threats</h3>
+                <ul>
+                    <li><strong>Utility Software:</strong> System software to manage/maintain resources (file managers, disk defragmenters, backup, diagnostics).</li>
+                    <li><strong>Antivirus Software:</strong> Detects, prevents, and removes malicious software (viruses, worms, rootkits) by scanning files against databases.</li>
+                    <li><strong>Anti-Spyware:</strong> Detects and removes spyware (secretly monitors user activity, keylogging, steals info).</li>
+                    <li><strong>Firewall:</strong> Hardware/software monitoring incoming/outgoing traffic based on rules. Barrier between trusted internal and untrusted external networks.</li>
+                    <li><strong>Adware:</strong> Automatically displays/downloads unwanted ads. Can track browsing habits.</li>
+                    <li><strong>Trojan (Trojan Horse):</strong> Malware disguised as legitimate software to trick users. Creates backdoors for hackers.</li>
+                </ul>
+
+                <h3>Additional Key Concepts (From Files)</h3>
+                <ul>
+                    <li><strong>Wi-Fi:</strong> Allows devices to connect to a network wirelessly.</li>
+                    <li><strong>Firewall Placement:</strong> Sits between internal (trusted) and external (untrusted) networks.</li>
+                    <li><strong>Bluetooth:</strong> Short-range wireless (typically within 10 meters).</li>
+                    <li><strong>Ransomware:</strong> Blocks access to files until a ransom is paid.</li>
+                    <li><strong>MAC Address:</strong> Also known as a Physical Address. Unique identifier for a NIC (Network Interface Card).</li>
+                    <li><strong>Router:</strong> Routes data from one network to another based on IP address.</li>
+                    <li><strong>.vbs:</strong> File extension for Visual Basic Script (used by some viruses like ILOVEYOU).</li>
+                    <li><strong>Home Network Device:</strong> Typically combines a Wireless Access Point (WAP), a Switch, and a Router.</li>
+                    <li><strong>Server Types:</strong> File servers, Print servers, Mail servers, Web servers.</li>
+                    <li><strong>Echo Check:</strong> Error detection method where the receiver sends data back to the sender; the sender compares it with the original to check for errors.</li>
+                    <li><strong>Augmented Reality (AR):</strong> Technology that adds computer-generated information to the real world. Examples include education (3D models over books), gaming (characters in real surroundings), and robotics (instructions over real robots).</li>
+                </ul>
+            `;
+        }
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', () => {
+            populateNotes();
+        });
+
+    </script>
+</body>
+</html>
